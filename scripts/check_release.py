@@ -31,7 +31,8 @@ for name in filter(None, files):
     if (set(p.parts) & blocked_parts or p.name in blocked_names
             or p.name.startswith(".env") and p.name != ".env.example"
             or any(x.endswith(".egg-info") for x in p.parts)
-            or p.suffix.lower() in blocked_suffixes):
+            or (p.suffix.lower() in blocked_suffixes
+                and name not in supplied_assets)):
         errors.append(f"Excluded file staged: {name}")
     if p.parts[:2] == ("tools", "assets") and name not in supplied_assets:
         errors.append(f"Unlisted release asset staged: {name}")

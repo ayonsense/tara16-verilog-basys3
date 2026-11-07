@@ -1,0 +1,93 @@
+<svg viewBox="0 0 1040 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">The end-to-end TARA hardware system</title>
+  <desc id="desc">The TARA CPU and unified memory connected to game inputs, clock controls, TARA Studio, and a VGA monitor.</desc>
+  <defs>
+    <marker id="aM" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#7a1e2b"/></marker>
+    <marker id="aMs" markerWidth="9" markerHeight="9" refX="0" refY="3" orient="auto"><path d="M7,0 L0,3 L7,6 Z" fill="#7a1e2b"/></marker>
+    <marker id="aT" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#167c80"/></marker>
+    <marker id="aTs" markerWidth="9" markerHeight="9" refX="0" refY="3" orient="auto"><path d="M7,0 L0,3 L7,6 Z" fill="#167c80"/></marker>
+    <style>
+      .nm{font:600 13px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#172033}
+      .sub{font:11px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#667085}
+      .lbl{font:11px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fill:#3a4150;paint-order:stroke;stroke:#fff;stroke-width:3px}
+      .lk{stroke:#7a1e2b;stroke-width:2}
+      .lkt{stroke:#167c80;stroke-width:2}
+    </style>
+  </defs>
+
+  <rect width="1040" height="480" fill="#fff"/>
+
+  <!-- FPGA boundary -->
+  <rect x="180" y="40" width="660" height="420" rx="14" fill="#faf7f2" stroke="#9aa3ae" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="196" y="62" style="font:700 12px -apple-system,Segoe UI,Arial,sans-serif;fill:#7b8492">FPGA · Digilent Basys 3</text>
+
+  <!-- Links -->
+  <line class="lk" x1="370" y1="264" x2="440" y2="264" marker-start="url(#aMs)" marker-end="url(#aM)"/>
+  <line class="lkt" x1="610" y1="189" x2="668" y2="189" marker-start="url(#aTs)" marker-end="url(#aT)"/>
+  <line class="lk" x1="610" y1="339" x2="668" y2="339" marker-end="url(#aM)"/>
+  <line class="lkt" x1="818" y1="189" x2="890" y2="189" marker-start="url(#aTs)" marker-end="url(#aT)"/>
+  <line class="lk" x1="818" y1="339" x2="890" y2="339" marker-end="url(#aM)"/>
+  <line class="lk" x1="290" y1="372" x2="290" y2="326" marker-end="url(#aM)"/>
+  <line class="lk" x1="160" y1="108" x2="210" y2="108" marker-end="url(#aM)"/>
+  <line class="lk" x1="370" y1="112" x2="440" y2="150" marker-end="url(#aM)"/>
+
+  <!-- TARA CPU -->
+  <rect x="210" y="204" width="160" height="120" rx="6" fill="#f4e3e5" stroke="#7a1e2b" stroke-width="2"/>
+  <text class="nm" x="290" y="248" text-anchor="middle">TARA CPU</text>
+  <text class="sub" x="290" y="268" text-anchor="middle">16-bit microcoded core</text>
+  <text class="sub" x="290" y="284" text-anchor="middle">PC · IR · ALU · Registers</text>
+
+  <!-- Unified memory -->
+  <rect x="440" y="120" width="170" height="240" rx="6" fill="#f7eedb" stroke="#9c6f2c" stroke-width="2"/>
+  <text class="nm" x="525" y="150" text-anchor="middle">Unified Memory</text>
+  <text class="sub" x="525" y="168" text-anchor="middle">2 KB · 1024 × 16</text>
+  <rect x="458" y="196" width="134" height="34" rx="4" fill="#e4f0ef" stroke="#167c80" stroke-width="1"/>
+  <text class="sub" x="525" y="217" text-anchor="middle">0x5FF · live inputs</text>
+  <rect x="458" y="284" width="134" height="48" rx="4" fill="#f7e7c4" stroke="#9c6f2c" stroke-width="1"/>
+  <text class="sub" x="525" y="303" text-anchor="middle">0x600–0x7FF</text>
+  <text class="sub" x="525" y="319" text-anchor="middle">framebuffer</text>
+
+  <!-- Game inputs -->
+  <rect x="210" y="72" width="160" height="72" rx="6" fill="#e4f0ef" stroke="#167c80" stroke-width="1.6"/>
+  <text class="nm" x="290" y="100" text-anchor="middle">Game inputs</text>
+  <text class="sub" x="290" y="118" text-anchor="middle">buttons + keyboard</text>
+  <text class="sub" x="290" y="132" text-anchor="middle">→ 0x5FF</text>
+
+  <!-- Clock and step -->
+  <rect x="210" y="372" width="160" height="72" rx="6" fill="#e4f0ef" stroke="#167c80" stroke-width="1.6"/>
+  <text class="nm" x="290" y="402" text-anchor="middle">Clock &amp; Step</text>
+  <text class="sub" x="290" y="420" text-anchor="middle">run · slow · single-step</text>
+
+  <!-- USB memory bridge -->
+  <rect x="668" y="150" width="150" height="78" rx="6" fill="#e4f0ef" stroke="#167c80" stroke-width="1.6"/>
+  <text class="nm" x="743" y="184" text-anchor="middle">USB Memory Bridge</text>
+  <text class="sub" x="743" y="202" text-anchor="middle">read · write · hold/run</text>
+
+  <!-- VGA scaler -->
+  <rect x="668" y="300" width="150" height="78" rx="6" fill="#e4f0ef" stroke="#167c80" stroke-width="1.6"/>
+  <text class="nm" x="743" y="334" text-anchor="middle">VGA Scaler</text>
+  <text class="sub" x="743" y="352" text-anchor="middle">64×64 → 640×480</text>
+
+  <!-- External devices -->
+  <rect x="30" y="72" width="130" height="72" rx="6" fill="#ffffff" stroke="#5b6472" stroke-width="1.4"/>
+  <text class="nm" x="95" y="105" text-anchor="middle">USB keyboard</text>
+  <text class="sub" x="95" y="123" text-anchor="middle">+ push-buttons</text>
+
+  <rect x="890" y="150" width="130" height="82" rx="6" fill="#ffffff" stroke="#5b6472" stroke-width="1.4"/>
+  <text class="nm" x="955" y="180" text-anchor="middle">TARA Studio</text>
+  <text class="sub" x="955" y="198" text-anchor="middle">TARA16 FPGA Tool</text>
+  <text class="sub" x="955" y="213" text-anchor="middle">(this app)</text>
+
+  <rect x="890" y="300" width="130" height="82" rx="6" fill="#ffffff" stroke="#5b6472" stroke-width="1.4"/>
+  <text class="nm" x="955" y="335" text-anchor="middle">VGA Monitor</text>
+  <text class="sub" x="955" y="353" text-anchor="middle">640×480 @ 60 Hz</text>
+
+  <!-- Link labels -->
+  <text class="lbl" x="405" y="258" text-anchor="middle">address / data</text>
+  <text class="lbl" x="639" y="183" text-anchor="middle">read · write</text>
+  <text class="lbl" x="639" y="333" text-anchor="middle">framebuffer</text>
+  <text class="lbl" x="854" y="183" text-anchor="middle">USB serial</text>
+  <text class="lbl" x="854" y="333" text-anchor="middle">RGB + sync</text>
+  <text class="lbl" x="318" y="350" text-anchor="middle">clock / step</text>
+  <text class="lbl" x="415" y="120" text-anchor="middle">0x5FF</text>
+</svg>

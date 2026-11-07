@@ -5,6 +5,13 @@ the Digilent Basys 3 (Artix-7 `xc7a35tcpg236-1`), with the 64×64 framebuffer
 scaled to 640×480 VGA. The ISA is transcribed exactly from the reference Python
 simulator (`../tara16-studio`), which is used as the golden model for verification.
 
+[![The end-to-end TARA hardware system](docs/tara-hardware-system.svg)](https://cse.iitm.ac.in/~ayon/courses/CS2300/taramanual/tarastudio/index.html#fpga)
+
+*The end-to-end TARA hardware system. The CPU and a single unified memory sit at
+the centre; the VGA scaler reads the framebuffer and drives a monitor, the
+directional buttons and USB keyboard land at `0x5FF`, and TARA Studio reads and
+reprograms memory over the USB serial link.*
+
 ## Setup
 
 Clone `tara16-verilog-basys3` and `tara16-studio` alongside each other. Python 3,
