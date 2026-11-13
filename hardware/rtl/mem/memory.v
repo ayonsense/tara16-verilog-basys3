@@ -85,6 +85,12 @@ module memory #(
     assign vga_rbyte = vga_lane ? vga_word[7:0] : vga_word[15:8];
 
     // host monitor: async word read (byte address -> word index)
-    assign host_rword = wmem[host_addr[10:1]];
+    // Expose the live keyboard byte to the host monitor as well as to the CPU.
+    // This makes address 0x5FF useful for diagnosing buttons, the Basys 3
+    // USB-HID keyboard, and Studio-forwarded keys without changing CPU state.
+    wire host_reads_keys = (host_addr[10:1] == 10'h2FF);
+    assign host_rword = host_reads_keys
+                      ? {8'b0, key_bits}
+                      : wmem[host_addr[10:1]];
 endmodule
 `default_nettype wire

@@ -78,7 +78,8 @@ module tara_top #(
         .keys(kbd_keys), .reset_req(kbd_reset_req)
     );
     // buttons OR keyboard -> the value returned by a read of 0x5FF
-    wire [7:0] key_bits = {3'b000, key_s1 | kbd_keys};
+    wire [4:0] host_keys;
+    wire [7:0] key_bits = {3'b000, key_s1 | kbd_keys | host_keys};
 
     // ── serial boot loader (idle unless ESP32 drives JA) ──
     wire        esp_we, loading;
@@ -107,7 +108,7 @@ module tara_top #(
         .tx_send(utx_send), .tx_data(utx_data), .tx_busy(utx_busy),
         .host_addr(host_addr), .host_rword(host_rword),
         .mon_we(mon_we), .mon_addr(mon_addr), .mon_data(mon_data),
-        .cpu_hold(cpu_hold)
+        .cpu_hold(cpu_hold), .host_keys(host_keys)
     );
     // memory write port: monitor has priority over the ESP32 loader
     wire        ld_we   = mon_we ? 1'b1     : esp_we;

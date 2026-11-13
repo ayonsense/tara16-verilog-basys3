@@ -4,6 +4,7 @@
 //   Ping : 'P'                        -> replies 0xA5
 //   Read : 'R' AH AL CH CL            -> C words, each {hi,lo} big-endian
 //   Write: 'W' AH AL CH CL <2C bytes> -> writes C words, replies 'K' (0x4B)
+//   Keys : 'K' bits                       -> sets host keyboard bits [4:0]
 //
 // Each transmitted byte uses a two-phase handshake: issue tx_send when the UART
 // is idle, then WAIT for tx_busy to rise before moving on — otherwise the next
@@ -30,12 +31,14 @@ module mem_monitor (
     output reg  [10:0] mon_addr,
     output reg  [7:0]  mon_data,
     // soft CPU hold: 'H' holds the CPU in reset, 'G' releases it (run from PC=0)
-    output reg         cpu_hold
+    output reg         cpu_hold,
+    // live game keys forwarded by TARA Studio over USB-UART
+    output reg  [4:0]  host_keys
 );
-    initial cpu_hold = 1'b0;
+    initial begin cpu_hold = 1'b0; host_keys = 5'b0; end
     localparam [3:0] IDLE=0, HDR=1,
                      RD_HI=2, RD_HW=3, RD_LO=4, RD_LW=5,
-                     WR_HI=6, WR_LO=7, ACK=8, ACK_W=9;
+                     WR_HI=6, WR_LO=7, ACK=8, ACK_W=9, KEYS=10;
     reg [3:0]  st   = IDLE;
     reg        wr   = 1'b0;          // current command is a write
     reg [1:0]  hi   = 2'd0;          // header byte index 0..3
@@ -48,7 +51,7 @@ module mem_monitor (
         tx_send <= 1'b0;
         mon_we  <= 1'b0;
         if (rst) begin
-            st <= IDLE; hi <= 0; cpu_hold <= 1'b0;
+            st <= IDLE; hi <= 0; cpu_hold <= 1'b0; host_keys <= 5'b0;
         end else case (st)
             IDLE: if (rx_valid) begin
                       hi <= 0;
@@ -56,9 +59,15 @@ module mem_monitor (
                       else if (rx_data == "W") begin wr <= 1'b1; st <= HDR; end
                       else if (rx_data == "H") cpu_hold <= 1'b1;   // hold CPU in reset
                       else if (rx_data == "G") cpu_hold <= 1'b0;   // release -> run @PC=0
+                      else if (rx_data == "K") st <= KEYS;
                       else if (rx_data == "P" && !tx_busy) begin
                           tx_data <= 8'hA5; tx_send <= 1'b1;        // ping reply
                       end
+                  end
+
+            KEYS: if (rx_valid) begin
+                      host_keys <= rx_data[4:0];
+                      st <= IDLE;
                   end
 
             HDR: if (rx_valid) begin

@@ -19,9 +19,9 @@ CTRL_RTL = ../rtl/control/ring_counter.v ../rtl/control/control_rom.v \
            ../rtl/control/control_unit.v
 CPU_RTL  = $(ALU_RTL) $(CORE_RTL) $(MEM_RTL) $(CTRL_RTL) ../rtl/cpu/tara_cpu.v
 
-.PHONY: all adders alu regfile cpu microcode prog clean
+.PHONY: all adders alu regfile cpu keyboard microcode prog clean
 
-all: microcode prog adders alu regfile cpu
+all: microcode prog adders alu regfile cpu keyboard
 	@echo "================ all testbenches done ================"
 
 # (re)generate microcode + boot program before the CPU test
@@ -45,6 +45,11 @@ regfile: ../rtl/core/regfile.v tb_regfile.v
 cpu: microcode prog $(CPU_RTL) tb_cpu.v
 	$(IV) $(IFLAGS) -o tb_cpu.vvp tb_cpu.v $(CPU_RTL)
 	$(VVP) tb_cpu.vvp
+
+keyboard: ../rtl/board/ps2_rx.v ../rtl/board/ps2_keyboard.v tb_ps2_keyboard.v
+	$(IV) $(IFLAGS) -o tb_ps2_keyboard.vvp tb_ps2_keyboard.v \
+		../rtl/board/ps2_rx.v ../rtl/board/ps2_keyboard.v
+	$(VVP) tb_ps2_keyboard.vvp
 
 clean:
 	rm -f *.vvp
